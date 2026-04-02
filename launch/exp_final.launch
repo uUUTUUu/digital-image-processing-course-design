@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="exp_final" type="exp_final" name="exp_final_node" output="screen">
+        <!-- Speed Parameters (m/s) -->
+        <param name="speed_init" value="0.2" />
+        <param name="speed_normal" value="0.4" />
+        <param name="speed_turn" value="0" />
+        
+        <!-- Angular Velocity Parameters (rad/s) -->
+        <param name="angular_turn_right" value="-0.1" />
+        <param name="angular_turn_left" value="0.1" />
+        <param name="speed_stop" value="0.0" />
+        
+        <!-- PID Control Parameter -->
+        <param name="kp" value="0.003" />
+
+        <!-- Side ROI parameters (pixels) -->
+        <param name="roi_h" value="200" />
+        <param name="roi_w" value="200" />
+        <param name="roi_left_offset_x" value="100" />
+        <param name="roi_right_offset_x" value="100" />
+        <!-- Enlarged ROI for final APPROACH_GAP stage (pixels) -->
+        <param name="final_roi_h" value="300" />
+        <param name="final_roi_w" value="400" />
+
+        <!-- TURN_RIGHT_TO_GAP phase frame counts (at 10 Hz, in chronological order) -->
+        <!-- Phase 1: rotate right (open-loop) -->
+        <param name="turn1_frames" value="30" />
+        <!-- Phase 2: move forward #1 (open-loop) -->
+        <param name="move_frames" value="40" />
+        <!-- Phase 3: left turn back (uses turn2_frames) -->
+        <param name="turn2_frames" value="30" />
+        <!-- Phase 4: move forward #2 towards middle cone -->
+        <param name="phase4_move_frames" value="30"/>
+        <!-- Phase 5: final right turn to align with final lane -->
+        <param name="phase5_turn_frames" value="70"/>
+
+        <!-- Gap detection thresholds (left/right ROI white pixel ratio) -->
+        <!-- Enter first gap: left > 0.5, right > 0.3 -->
+        <param name="enter_left_min"  value="0.5" />
+        <param name="enter_right_min" value="0.3" />
+        <!-- Exit first gap (safe to start turning right): left > 0.6, right < 0.1 -->
+        <param name="exit_left_min"   value="0.6" />
+        <param name="exit_right_max"  value="0.1" />
+
+        <!-- Final stage after enlarged ROIs both nearly empty -->
+        <!-- Forward frames @10Hz (~1s by default) -->
+        <param name="final_forward_frames" value="20" />
+        <!-- Final right turn frames @10Hz (adjust to ~90 deg) -->
+        <param name="final_turn_frames"    value="80" />
+        <!-- Final right turn angular velocity (rad/s) -->
+        <param name="final_turn_angular"   value="-0.1" />
+        <!-- Trigger threshold for final stage: both enlarged L/R ratios < this (e.g. 0.02) -->
+        <param name="final_exit_ratio_max" value="0.02" />
+
+    </node>
+</launch>
+
